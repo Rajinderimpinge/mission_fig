@@ -1,0 +1,121 @@
+
+        <div id="fb-root"></div>
+        <script src="http://connect.facebook.net/en_US/all.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>
+        function verify(){
+        	//var app_array = Arra
+        	var myAppId='641206265895621'
+   FB.init({
+    appId  : "641206265895621",
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true  // parse XFBML
+  });
+  
+  FB.login(function(response) {
+  	
+   if (response.authResponse) {
+   	var access_token =   '641206265895621|9250pmdIBdwJnsUykTUnoL5Xm9E'
+   	 var user_access_token =   FB.getAuthResponse()['accessToken'];
+   	 current_session(user_access_token)
+   	var notificationData={
+   	'href' : 'http://202.164.36.12:3000/fb-oauth/',
+   	'access_token': access_token,
+   	'template': 'Welcome to mission fig, a fun and a safe way for investing and building mock portfolio.'
+   }
+   FB.api('/641206265895621',function(res){
+   	if (!res.id){
+   		FB.api('/me', function(response) {
+   		 send_notification(response);
+   		 send_feed();
+   		});
+   	}   
+   		
+   	})
+  // window.top.location='https://apps.facebook.com/missionfig'
+     // FB.api('/me', function(response) {
+     	// $.ajax({
+		// url: "/user_applications/application_status?",
+		// dataType : 'json',
+		// data : {
+			// 'user' : response.id,
+     		// 'application': myAppId
+		// },
+		// success : function(data) {
+			// if (data.valid==false){
+				// send_notification(response);
+				  // var body = 'Reading Connect JS documentation';
+		          // var userProfileMessage = 'Welcome to mission fig, a fun and a safe way for investing and building mock portfolio.';
+		         // FB.api('/me/feed', 'post', { body: body, message: userProfileMessage }, function(response) {
+		          // if (!response || response.error) {
+		          	// console.log(response.error)
+		          // } else {
+		            // // alert('Post ID: ' + response);
+		          // }
+		           // // window.top.location='https://apps.facebook.com/missionfig'
+		        // });
+			// }else{
+				// window.top.location='https://apps.facebook.com/missionfig'
+			// }
+// 			
+		// }});
+// 		
+          // // var body = 'Reading Connect JS documentation';
+          // // var userProfileMessage = 'Welcome to mission fig, a fun and a safe way for investing and building mock portfolio.';
+// // 
+        // // FB.api('/me/feed', 'post', { body: body, message: userProfileMessage }, function(response) {
+          // // if (!response || response.error) {
+          	// // console.log(response.error)
+          // // } else {
+            // // // alert('Post ID: ' + response);
+          // // }
+           // // // window.top.location='https://apps.facebook.com/missionfig'
+        // // });
+//           
+     // });
+      function send_notification(response){
+      		 FB.api( response.id+'/notifications?','POST',notificationData,function(notifyRes){
+   	 	 });   	 
+   	 }
+   	 function send_feed(){ 
+   	 	   	 	var body = 'Reading Connect JS documentation';
+		          var userProfileMessage = 'Welcome to mission fig, a fun and a safe way for investing and building mock portfolio.';
+		         FB.api('/me/feed', 'post', { body: body, message: userProfileMessage }, function(response) {
+		          if (!response || response.error) {
+		          	console.log(response.error)
+		          }
+		          window.top.location='https://apps.facebook.com/missionfig'
+		         });
+   	 	
+   	 }
+   	} else {
+   	alert("login");
+    
+   }
+ },{ scope: 'publish_stream,offline_access'},{redirect: 'https://apps.facebook.com/missionfig'});
+    // Additional initialization code such as adding Event Listeners goes here
+       
+ }
+ 
+ 
+ 
+ function current_session(user_access_token){
+ 	$.ajax({
+		url: "fb-oauth/set_session?",
+		dataType : 'json',
+		data : {
+			'user_access_token' : user_access_token
+     		
+		},
+		success : function(data) {
+			if (data.valid==false){
+				// send_notification(response);
+			}
+		}});
+ }
+  
+        verify();
+         
+        </script>
+    
